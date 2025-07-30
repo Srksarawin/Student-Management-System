@@ -7,13 +7,12 @@ let path = require('path');
 let app = express();
 port = 8000;
 
-// Middleware
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
-// MySQL connection
+
 let db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
@@ -30,9 +29,7 @@ db.connect((err) => {
     console.log('Connected to the database');
 });
 
-// Routes
 
-// Login route
 app.post('/login', (req, res) => {
     const { username, password, role } = req.body;
     
@@ -81,7 +78,7 @@ app.post('/login', (req, res) => {
     }
 });
 
-// Student courses routes
+
 app.get('/student/:id/courses', (req, res) => {
     const studentId = req.params.id;
     const query = 'SELECT * FROM courses WHERE student_id = ?';
@@ -132,7 +129,7 @@ app.delete('/courses/:id', (req, res) => {
     });
 });
 
-// Teacher routes
+
 app.get('/teacher/students', (req, res) => {
     const query = 'SELECT id, name, age, class_name, email FROM students';
     
@@ -160,7 +157,6 @@ app.get('/teacher/courses', (req, res) => {
     });
 });
 
-// Serve HTML files
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
